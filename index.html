@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Confirmación de Asistencia - Mis XV</title>
+    <meta property="og:title" content="¡Estás invitado a mis XV años!" />
+    <meta property="og:description" content="Haz clic aquí para confirmar tu asistencia y ver tu mesa." />
+    <meta property="og:image" content="https://i.pinimg.com/videos/thumbnails/originals/61/71/16/617116c7def66f425a164415ccd14a5e.0000000.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .card { background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; overflow: hidden; }
+        .card-img { width: 100%; height: auto; display: block; border-bottom: 1px solid #eee; }
+        .card-content { padding: 30px; }
+        h2 { color: #333; margin-top: 0; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 16px; }
+        .btn-buscar { background-color: #4A90E2; color: white; }
+        .btn-si { background-color: #28a745; color: white; margin-top: 10px; }
+        .btn-no { background-color: #dc3545; color: white; margin-top: 10px; }
+        .info-box { background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: left; display: none; }
+        .info-box p { margin: 5px 0; color: #555; }
+        .resaltado { font-weight: bold; color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <img src="https://i.pinimg.com/videos/thumbnails/originals/61/71/16/617116c7def66f425a164415ccd14a5e.0000000.jpg" class="card-img" alt="Invitación"> 
+    
+    <div class="card-content">
+        <h2>Confirmar Asistencia</h2>
+        
+        <div id="paso1">
+            <p>Escribe tu nombre para ver el número de tu mesa:</p>
+            <input type="text" id="nombreBusqueda" placeholder="Ej: JUAN PEREZ">
+            <button class="btn-buscar" onclick="buscarInvitado()">BUSCAR</button>
+        </div>
+
+        <div id="paso2" class="info-box">
+            <p>Hola <span id="displayNombre" class="resaltado"></span>,</p>
+            <p>Tu Mesa: <span id="displayMesa" class="resaltado"></span></p>
+            <p id="displayAcomp"></p> 
+            <hr>
+            <p>¿Confirmas tu asistencia?</p>
+            <button class="btn-si" onclick="enviarConfirmacion('SÍ')">SÍ, ASISTIRÉ</button>
+            <button class="btn-no" onclick="enviarConfirmacion('NO')">NO PODRÉ ASISTIR</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const invitados = [
+        { nombre: "VERONICA CORTES", mesa: "5", adultos: 4, ninos: 0 },
+        { nombre: "NADIA CORTES", mesa: "2", adultos: 4, ninos: 1 },
+        { nombre: "EMILIO VICTORIO", mesa: "10", adultos: 5, ninos: 0 },
+        { nombre: "SUSANA CORTES", mesa: "1", adultos: 2, ninos: 1 },
+        { nombre: "LUCIA CORTES", mesa: "5", adultos: 3, ninos: 0 },
+        { nombre: "CRISTINA CORTES", mesa: "2", adultos: 5, ninos: 1 },
+        { nombre: "JULIETA CORTES", mesa: "10", adultos: 2, ninos: 0 },
+        { nombre: "JANET CORTES", mesa: "1", adultos: 4, ninos: 0 },
+        { nombre: "JAQUELIN CORTES", mesa: "1", adultos: 3, ninos: 0 },
+        { nombre: "MARICRUZ CORTES", mesa: "5", adultos: 3, ninos: 0 },
+        { nombre: "PATRICIA CORTES", mesa: "2", adultos: 6, ninos: 4 },
+        { nombre: "LIDIA CORTES", mesa: "10", adultos: 2, ninos: 0 },
+        { nombre: "EVA CORTES", mesa: "1", adultos: 3, ninos: 1 },
+        { nombre: "LORENA CORTES", mesa: "10", adultos: 5, ninos: 1 },
+        { nombre: "ESTELA CORTES", mesa: "1", adultos: 2, ninos: 0 },
+        { nombre: "FABIOLA CORTES", mesa: "1", adultos: 5, ninos: 0 },
+        { nombre: "CARLOS CORTES", mesa: "5", adultos: 2, ninos: 2 },
+        { nombre: "MIRIAM CORTES", mesa: "10", adultos: 3, ninos: 1 },
+        { nombre: "JAVIER CORTES", mesa: "1", adultos: 3, ninos: 1 },
+        { nombre: "TERE CORTES", mesa: "1", adultos: 5, ninos: 0 },
+        { nombre: "ARMANDO CORTE", mesa: "5", adultos: 3, ninos: 0 }
+    ];
+
+    let invitadoActual = null;
+
+    function buscarInvitado() {
+        const input = document.getElementById('nombreBusqueda').value.toUpperCase().trim();
+        invitadoActual = invitados.find(i => i.nombre === input);
+
+        if (invitadoActual) {
+            document.getElementById('paso1').style.display = 'none';
+            document.getElementById('paso2').style.display = 'block';
+            document.getElementById('displayNombre').innerText = invitadoActual.nombre;
+            document.getElementById('displayMesa').innerText = invitadoActual.mesa;
+            
+            let texto = `<b>Adultos:</b> ${invitadoActual.adultos}`;
+            if (invitadoActual.ninos > 0) {
+                texto += ` | <b>Niños:</b> ${invitadoActual.ninos}`;
+            }
+            document.getElementById('displayAcomp').innerHTML = texto;
+            
+        } else {
+            alert("No encontramos tu nombre. Intenta escribirlo igual que en tu invitación (Ej: JUAN PEREZ).");
+        }
+    }
+
+    function enviarConfirmacion(respuesta) {
+        const nombre = invitadoActual.nombre;
+        const mensaje = `Hola! Soy ${nombre}. Confirmo que ${respuesta} asistiré al evento. Mi mesa es la ${invitadoActual.mesa}. Somos ${invitadoActual.adultos} adultos y ${invitadoActual.ninos} niños.`;
+        const numeroTelefono = "5548628329"; 
+        window.location.href = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
+    }
+</script>
+
+</body>
+</html>
