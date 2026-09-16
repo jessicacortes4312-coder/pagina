@@ -103,7 +103,7 @@
 
     function enviarConfirmacion(respuesta) {
         const nombre = invitadoActual.nombre;
-        const mensaje = `Hola! Soy ${nombre}. Confirmo que ${respuesta} asistiré.`;
+        const mensaje = `Hola!Confirmo que ${respuesta} asistiré al evento.`;
         const numeroTelefono = "5548628329"; 
         window.location.href = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(mensaje)}`;
     }
